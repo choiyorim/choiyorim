@@ -78,7 +78,7 @@ export class Lecture {
      */
     getLectureByTrack(lectureTrack: string): Promise<any> {
         return new Promise(async (resolve, reject) => {
-            await conn.query(`SELECT * FROM lectures WHERE lectureCode=?`, [lectureTrack], function (err, rows) {
+            await conn.query(`SELECT * FROM lectures WHERE track=?`, [lectureTrack], function (err, rows) {
                 if (err) {
                     reject(err);
                 } else {
