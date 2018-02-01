@@ -12,12 +12,11 @@ export class LectureRoutes {
     public router() {
         this.lectureRouter.post('/lectures', createLecture);
         this.lectureRouter.get('/lectures', listLecture);
-        this.lectureRouter.get('/lectures/:lectureName', getLectureByName);
-        this.lectureRouter.delete('/lectures/:track', getLectureByTrack);
-        this.lectureRouter.get('/lectures/:lectureCode', getLectureByCode);
+        this.lectureRouter.get('/lectures/tracks/:lectureName', getLectureByName);
+        this.lectureRouter.get('/lectures/tracks/:track', getLectureByTrack);
+        this.lectureRouter.get('/lectures/tracks/:lectureCode', getLectureByCode);
         this.lectureRouter.put('/lectures/:lectureIndex', updateLecture);
         this.lectureRouter.delete('/lectures/:lectureIndex', deleteLecture);
-
     }
 }
 
@@ -59,7 +58,7 @@ async function listLecture(req, res): Promise<void> {
  * @returns {Promise<void>}
  */
 async function getLectureByName(req, res): Promise<void> {
-    let lectureName: string = req.params.getLectureName;
+    let lectureName: string = req.params.lectureName;
     try {
         const result: any = await lecture.getLectureByName(lectureName);
         res.send(result);
@@ -74,7 +73,7 @@ async function getLectureByName(req, res): Promise<void> {
  * @returns {Promise<void>}
  */
 async function getLectureByTrack(req, res): Promise<void> {
-    let lectureTrack: string = req.params.getTrack;
+    let lectureTrack: string = req.params.track;
     try {
         const result: any = await lecture.getLectureByTrack(lectureTrack);
         res.send(result);
@@ -89,7 +88,7 @@ async function getLectureByTrack(req, res): Promise<void> {
  * @returns {Promise<void>}
  */
 async function getLectureByCode(req, res): Promise<void> {
-    let lectureCode: string = req.params.getLectureCode;
+    let lectureCode: string = req.params.lectureCode;
     try {
         const result: any = await lecture.getLectureByCode(lectureCode);
         res.send(result);
@@ -106,12 +105,14 @@ async function getLectureByCode(req, res): Promise<void> {
  */
 async function updateLecture(req, res): Promise<void> {
     let lectureIndex: string = req.params.lectureIndex;
-    let lectrueData = {
-        lectureIndex: req.body.lectureIndex
-
+    let lectureData = {
+        lectureCode: req.body.lectureCode,
+        lectureName: req.body.lectureName,
+        professorIndex: req.body.professorIndex,
+        track: req.body.track
     };
     try {
-        const result: any = await lecture.updateLecture(lectureIndex, lectrueData);
+        const result: any = await lecture.updateLecture(lectureIndex, lectureData);
         res.send(result);
     } catch (err) {
         res.send(err.message);
